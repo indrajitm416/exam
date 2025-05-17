@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Custom Exam System</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    input, button { margin: 5px 0; padding: 10px; width: 100%; max-width: 400px; }
+    .question { margin: 10px 0; }
+  </style>
+</head>
+<body>
+
+  <h2>Custom Exam System</h2>
+  <h3>Create Questions</h3>
+
+  <input type="text" id="question" placeholder="Enter question">
+  <input type="text" id="option1" placeholder="Option 1">
+  <input type="text" id="option2" placeholder="Option 2">
+  <input type="text" id="option3" placeholder="Option 3">
+  <input type="text" id="option4" placeholder="Option 4">
+  <input type="text" id="correct" placeholder="Correct answer">
+
+  <button onclick="addQuestion()">Add Question</button>
+  <button onclick="generateLink()">Generate Share Link</button>
+
+  <div id="questions"></div>
+
+  <h4>Share Link:</h4>
+  <div id="link"></div>
+
+<script>
+let questions = [];
+
+function addQuestion() {
+  let q = document.getElementById("question").value;
+  let o1 = document.getElementById("option1").value;
+  let o2 = document.getElementById("option2").value;
+  let o3 = document.getElementById("option3").value;
+  let o4 = document.getElementById("option4").value;
+  let c = document.getElementById("correct").value;
+
+  if (q && o1 && o2 && o3 && o4 && c) {
+    questions.push({ question: q, options: [o1, o2, o3, o4], answer: c });
+    document.getElementById("questions").innerHTML += `<div class="question">${q}</div>`;
+    document.getElementById("question").value = '';
+    document.getElementById("option1").value = '';
+    document.getElementById("option2").value = '';
+    document.getElementById("option3").value = '';
+    document.getElementById("option4").value = '';
+    document.getElementById("correct").value = '';
+  } else {
+    alert("সব ফিল্ড পূরণ করুন!");
+  }
+}
+
+function generateLink() {
+  let encoded = encodeURIComponent(JSON.stringify(questions));
+  let link = window.location.origin + "/exam_page.html?data=" + encoded;
+  document.getElementById("link").innerHTML = `<a href="${link}" target="_blank">${link}</a>`;
+}
+</script>
+
+</body>
+</html>

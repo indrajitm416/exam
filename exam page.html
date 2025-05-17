@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Take Exam</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    button { padding: 8px 16px; margin: 10px 0; }
+  </style>
+</head>
+<body>
+
+  <h2>Exam</h2>
+  <div id="exam"></div>
+  <button onclick="submitExam()">Submit</button>
+
+<script>
+let params = new URLSearchParams(window.location.search);
+let data = JSON.parse(decodeURIComponent(params.get("data")));
+let answers = [];
+
+function loadExam() {
+  let examDiv = document.getElementById("exam");
+  data.forEach((q, i) => {
+    let opts = q.options.map(opt => 
+      `<label><input type="radio" name="q${i}" value="${opt}"> ${opt}</label><br>`
+    ).join('');
+    examDiv.innerHTML += `<div><strong>${i+1}. ${q.question}</strong><br>${opts}</div><br>`;
+  });
+}
+
+function submitExam() {
+  let correct = 0;
+  data.forEach((q, i) => {
+    let selected = document.querySelector(`input[name="q${i}"]:checked`);
+    if (selected && selected.value === q.answer) correct++;
+  });
+  alert("Your score: " + correct + "/" + data.length);
+}
+
+loadExam();
+</script>
+
+</body>
+</html>
